@@ -73,48 +73,48 @@ FORM select_data_general .
     
       cl_demo_output=>display( lv_car_vert ).
     
-    ********************************** EXAMPLE 3 ********************************************
+********************************** EXAMPLE 3 ********************************************
     
-    * selectionner l'année de la fabrication de la voiture la plus recent.
-    * select the most recent car year
+* selectionner l'année de la fabrication de la voiture la plus recent.
+* select the most recent car year
     
-    * First way
+* First way
     
       SELECT SINGLE MAX( car_year ) FROM zdriver_car_kde
         INTO @DATA(lv_car_year).
     
       cl_demo_output=>display( lv_car_year ).
     
-    * Second way, here the min date is 0 because a row is empty, so it accepts as 0.
-    * But you can see in the table mara, MIN works also like MAX
+* Second way, here the min date is 0 because a row is empty, so it accepts as 0.
+* But you can see in the table mara, MIN works also like MAX
     
       SELECT SINGLE MIN( car_year ) FROM zdriver_car_kde
         INTO @DATA(lv_car_year_min).
     
       cl_demo_output=>display( lv_car_year_min ).
     
-    * Second way
+* Second way
     
       SELECT MIN( ersda ) FROM mara
         INTO @DATA(lv_date).
     
       cl_demo_output=>display( lv_date ).
     
-    *********************************************** EXAMPLE 4 ****************************************
+*********************************************** EXAMPLE 4 ****************************************
     
-    * recuperer le propritaire de cette voiture
-    * get the name of the owner of this car
+* recuperer le propritaire de cette voiture
+* get the name of the owner of this car
     
       SELECT SINGLE name, surname, car_year FROM zdriver_car_kde
         INTO @DATA(lv_car_owner)
         WHERE car_year = @lv_car_year.
     
       cl_demo_output=>display( lv_car_owner ).
+
+*********************************************** EXAMPLE 4 ****************************************
     
-    *********************************************** EXAMPLE 4 ****************************************
-    
-    * verifier à l'aide d'une lecture directe s'il existe une voiture de la marque "KIA"  dans notre table
-    * verify that whether a car with type "kia' exist in the table.
+* verifier à l'aide d'une lecture directe s'il existe une voiture de la marque "KIA"  dans notre table
+* verify that whether a car with type "kia' exist in the table.
     
       DATA : lv_number_kia TYPE i.
       SELECT * FROM zdriver_car_kde INTO @DATA(lv_car_brand_kia).
@@ -126,14 +126,14 @@ FORM select_data_general .
     
       ENDSELECT.
     
-    *********************************************** EXAMPLE 5 ****************************************
+*********************************************** EXAMPLE 5 ****************************************
     
-    * Vérifiez à l'aide d'une lecture directe s'il existe une voiture de la marque "KIA"
-    * It is the same example with the above, verify that the the car brand "KIA" exist or not in the table.
-    * when you use "TRANSPORTING NO FIELD", the statement "READ TABLE" only checks whether the row is being searched for exists
-    * and fills the system field sy-subrc
-    * the system can not access the content of the found row.
-    * burada sana sayiyi vermiyor sadece bulup bulamadigini soyluyor.
+* Vérifiez à l'aide d'une lecture directe s'il existe une voiture de la marque "KIA"
+* It is the same example with the above, verify that the the car brand "KIA" exist or not in the table.
+* when you use "TRANSPORTING NO FIELD", the statement "READ TABLE" only checks whether the row is being searched for exists
+* and fills the system field sy-subrc
+* the system can not access the content of the found row.
+* burada sana sayiyi vermiyor sadece bulup bulamadigini soyluyor.
     
     
       SELECT * FROM zdriver_car_kde INTO TABLE @DATA(lt_zdriver5).
@@ -146,14 +146,14 @@ FORM select_data_general .
         MESSAGE i010(zgco_msg).
       ENDIF.
     
-    *********************************************** EXAMPLE 6 ****************************************
+*********************************************** EXAMPLE 6 ****************************************
     
-    * Creer une autre table interne au meme format que votre premiere table puis effectuez
-    * une lecture séquentielle sur notre premiere table et ajoutez dans notre deuxime table
-    * uniquement les lignes de la premiere table pour lesquelles le proprietaire vit à Toulouse,
-    * et affichez le deuxime table.
+* Creer une autre table interne au meme format que votre premiere table puis effectuez
+* une lecture séquentielle sur notre premiere table et ajoutez dans notre deuxime table
+* uniquement les lignes de la premiere table pour lesquelles le proprietaire vit à Toulouse,
+* et affichez le deuxime table.
     
-    * First way
+* First way
     
       DATA : ls_zdriver6 TYPE zdriver_car_kde,
              lt_zdriver7 TYPE SORTED TABLE OF zdriver_car_kde WITH NON-UNIQUE KEY  id_driver.
@@ -169,7 +169,7 @@ FORM select_data_general .
     
       cl_demo_output=>display( ls_zdriver6 ).
     
-    * Second way, if city is Arras
+* Second way, if city is Arras
     
       DATA : lt_zdriver_car1 TYPE TABLE OF zdriver_car_kde,
              lt_zdriver_car2 TYPE TABLE OF zdriver_car_kde,
@@ -186,7 +186,7 @@ FORM select_data_general .
     
       cl_demo_output=>display( lt_zdriver_car2 ).
     
-    * Third way, if the car brand is citroen
+* Third way, if the car brand is citroen
     
       DATA : lt_zdriver_car_kde2 TYPE TABLE OF zdriver_car_kde,
              ls_zdriver_car_kde2 TYPE  zdriver_car_kde.
@@ -201,21 +201,21 @@ FORM select_data_general .
     
       cl_demo_output=>display( lt_zdriver_car_kde2 ).
     
-    *********************************************** EXAMPLE 7 ****************************************
+*********************************************** EXAMPLE 7 ****************************************
     
-    * videz la deuxieme table (lt_zdriver_car_kde2), renouvellez la meme opération.
-    * cette fois ne transferez dans le deuxieme table que la ligne correspondant à la premiere voiture grise
-    * In this case, the result will show me only first grey car.
+* videz la deuxieme table (lt_zdriver_car_kde2), renouvellez la meme opération.
+* cette fois ne transferez dans le deuxieme table que la ligne correspondant à la premiere voiture grise
+* In this case, the result will show me only first grey car.
     
-    * First declare internal tables (first and second internal tables) and structure
+* First declare internal tables (first and second internal tables) and structure
       DATA : lt_zdriver_car3 TYPE TABLE OF zdriver_car_kde,
              lt_zdriver_car4 TYPE TABLE OF zdriver_car_kde,
              ls_zdriver_car3 TYPE  zdriver_car_kde.
     
-    * select data from table
+* select data from table
       SELECT * FROM zdriver_car_kde INTO TABLE lt_zdriver_car3.
     
-    * loop at to display all the grey cars
+* loop at to display all the grey cars
       LOOP AT lt_zdriver_car3 ASSIGNING FIELD-SYMBOL(<fs_zdriver_car3>).
         IF <fs_zdriver_car3>-car_color = 'GRISE' .
           MOVE <fs_zdriver_car3> TO ls_zdriver_car3.
@@ -223,17 +223,17 @@ FORM select_data_general .
         ENDIF.
       ENDLOOP.
     
-    * display all the grey cars
+* display all the grey cars
       cl_demo_output=>display( lt_zdriver_car4 ).
     
     
-    * NOW display first grey car, FIRST WAY
+* NOW display first grey car, FIRST WAY
     
-    * clear second table
+* clear second table
     
       CLEAR lt_zdriver_car4.
     
-    * Loop at to see just first grey car
+* Loop at to see just first grey car
       LOOP AT lt_zdriver_car3 ASSIGNING <fs_zdriver_car3>.
         CHECK <fs_zdriver_car3>-car_color = 'GRISE'.
         <fs_zdriver_car3> = ls_zdriver_car3.
@@ -242,7 +242,7 @@ FORM select_data_general .
       cl_demo_output=>display( ls_zdriver_car3 ).
     
     
-    * NOW display first grey car, SECOND WAY
+* NOW display first grey car, SECOND WAY
     
     
       CLEAR lt_zdriver_car4.
@@ -256,7 +256,7 @@ FORM select_data_general .
       cl_demo_output=>display( ls_zdriver_car3 ).
     
     
-    * NOW display first grey car, THIRD WAY
+* NOW display first grey car, THIRD WAY
     
       CLEAR lt_zdriver_car4.
     
@@ -266,7 +266,7 @@ FORM select_data_general .
     
       cl_demo_output=>display( ls_zdriver_car3 ).
     
-    * NOW display first grey car, FOURTH WAY
+* NOW display first grey car, FOURTH WAY
     
       CLEAR lt_zdriver_car4.
     
@@ -279,7 +279,7 @@ FORM select_data_general .
     
       cl_demo_output=>display( ls_zdriver_car3 ).
     
-    * NOW display first grey car, FIFTH WAY
+* NOW display first grey car, FIFTH WAY
     
       CLEAR lt_zdriver_car4.
     
@@ -305,9 +305,9 @@ FORM select_data_general .
     *& <--  p2        text
     *&---------------------------------------------------------------------*
     FORM append_insert .
-    * APPEND a new row at the end of the table ZDRIVER_CAR_KDE
-    * copy the content of the first table to the second table.
-    * add a row in the 2. internal table with new information
+* APPEND a new row at the end of the table ZDRIVER_CAR_KDE
+* copy the content of the first table to the second table.
+* add a row in the 2. internal table with new information
     
     
       DATA : lt_zdriver_car_kde TYPE SORTED TABLE OF zdriver_car_kde WITH NON-UNIQUE KEY id_driver,
